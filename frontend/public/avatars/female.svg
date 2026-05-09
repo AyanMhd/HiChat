@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Default female avatar">
+  <defs>
+    <linearGradient id="bg" x1="22" x2="138" y1="18" y2="146" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9d9d9"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="56" x2="106" y1="42" y2="129" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f6c99f"/>
+      <stop offset="1" stop-color="#c97448"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="41" x2="121" y1="20" y2="130" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4b2a16"/>
+      <stop offset="1" stop-color="#160b05"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="80" fill="#111"/>
+  <circle cx="80" cy="80" r="70" fill="url(#bg)"/>
+  <path d="M36 141c9-27 25-42 44-42s35 15 44 42" fill="#2b2b2b"/>
+  <path d="M42 84c-2-40 13-63 38-63s40 23 38 63c-2 31-19 50-38 50S44 115 42 84z" fill="url(#hair)"/>
+  <path d="M51 77c-7-4-12 2-9 11 3 8 9 9 12 4l-3-15z" fill="#cd8051"/>
+  <path d="M109 77c7-4 12 2 9 11-3 8-9 9-12 4l3-15z" fill="#cd8051"/>
+  <path d="M51 66c0-25 13-40 29-40s29 15 29 40v23c0 24-13 41-29 41S51 113 51 89V66z" fill="url(#skin)"/>
+  <path d="M48 71c6-29 22-45 48-43 6 6 12 18 15 34-21-2-39-9-50-23-5 9-9 20-13 32z" fill="url(#hair)"/>
+  <path d="M71 83c-6-3-12-3-18 1" stroke="#4b2414" stroke-width="4" stroke-linecap="round"/>
+  <path d="M107 84c-6-4-12-4-18-1" stroke="#4b2414" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="64" cy="92" r="4" fill="#171717"/>
+  <circle cx="96" cy="92" r="4" fill="#171717"/>
+  <circle cx="58" cy="101" r="5" fill="#e9967a" opacity=".45"/>
+  <circle cx="102" cy="101" r="5" fill="#e9967a" opacity=".45"/>
+  <path d="M77 96c-2 6-4 9-7 12 4 2 8 2 12-1" fill="none" stroke="#9d552d" stroke-width="3" stroke-linecap="round"/>
+  <path d="M68 115c8 7 16 7 24 0" fill="none" stroke="#421b0d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M67 54c17 5 32 5 43 1-4-17-14-29-30-29-14 0-24 10-28 27 5-1 10-1 15 1z" fill="#2b1509"/>
+  <circle cx="51" cy="93" r="4" fill="#f5f5f5"/>
+  <circle cx="109" cy="93" r="4" fill="#f5f5f5"/>
+</svg>

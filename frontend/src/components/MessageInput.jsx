@@ -39,7 +39,7 @@ const MessageInput = () => {
   const handleTyping = (e) => {
     setText(e.target.value);
 
-    if (!socket || !selectedUser) return;
+    if (!socket || !selectedUser || selectedUser.isGroup) return;
 
     // Emit typing event
     socket.emit("typing", selectedUser._id);
@@ -85,7 +85,7 @@ const MessageInput = () => {
     if (!text.trim() && !imagePreview) return;
 
     // Stop typing indicator immediately when sending
-    if (socket && selectedUser) {
+    if (socket && selectedUser && !selectedUser.isGroup) {
       socket.emit("stopTyping", selectedUser._id);
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
@@ -109,16 +109,16 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="w-full border-t border-base-300 bg-base-100 p-3 sm:p-4">
       {/* Reply preview bar */}
       {replyingTo && (
-        <div className="mb-2 p-2 bg-base-200 rounded-lg flex items-center justify-between">
+        <div className="mb-2 p-2 bg-base-200 rounded-lg flex items-center justify-between border border-base-300">
           <div className="flex-1 min-w-0">
-            <span className="text-xs text-primary font-medium">
+            <span className="text-xs text-base-content font-medium">
               Replying to {replyingTo.senderId === authUser._id ? "yourself" : selectedUser.fullName}
             </span>
             <p className="text-sm truncate opacity-70">
-              {replyingTo.text || (replyingTo.image ? "📷 Photo" : "")}
+              {replyingTo.text || (replyingTo.image ? "Photo" : "")}
             </p>
           </div>
           <button
@@ -136,7 +136,7 @@ const MessageInput = () => {
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+              className="w-20 h-20 object-cover rounded-lg border border-base-300"
             />
             <button
               onClick={removeImage}
@@ -151,11 +151,11 @@ const MessageInput = () => {
       )}
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2 relative">
+        <div className="relative flex flex-1 gap-2">
           <input
             type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
+            className="mono-input input-sm rounded-lg bg-base-200 sm:input-md"
+            placeholder="Write a message"
             value={text}
             onChange={handleTyping}
           />
@@ -171,7 +171,7 @@ const MessageInput = () => {
           <div className="relative" ref={emojiPickerRef}>
             <button
               type="button"
-              className={`flex btn btn-circle ${showEmojiPicker ? "text-yellow-500" : "text-zinc-400"}`}
+              className={`icon-btn ${showEmojiPicker ? "bg-base-200 text-base-content" : "text-base-content/50"}`}
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             >
               <Smile size={20} />
@@ -180,7 +180,7 @@ const MessageInput = () => {
               <div className="absolute bottom-12 right-0 z-50">
                 <EmojiPicker
                   onEmojiClick={handleEmojiClick}
-                  theme="dark"
+                  theme="light"
                   width={300}
                   height={400}
                   searchDisabled
@@ -193,8 +193,7 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`flex btn btn-circle
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
+            className={`icon-btn ${imagePreview ? "bg-neutral text-neutral-content" : "text-base-content/50"}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
@@ -202,7 +201,7 @@ const MessageInput = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-primary btn-sm btn-square rounded-lg sm:btn-md"
           disabled={!text.trim() && !imagePreview}
         >
           <Send size={22} />

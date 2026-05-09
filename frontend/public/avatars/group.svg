@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Default group avatar">
+  <defs>
+    <linearGradient id="bg" x1="18" x2="142" y1="18" y2="142" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f5f5f5"/>
+      <stop offset="1" stop-color="#bdbdbd"/>
+    </linearGradient>
+    <linearGradient id="skinA" x1="43" x2="77" y1="43" y2="101" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0be8d"/>
+      <stop offset="1" stop-color="#c77848"/>
+    </linearGradient>
+    <linearGradient id="skinB" x1="82" x2="119" y1="43" y2="103" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f6c99f"/>
+      <stop offset="1" stop-color="#c97448"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="42" fill="#111"/>
+  <rect x="13" y="13" width="134" height="134" rx="34" fill="url(#bg)"/>
+  <path d="M25 138c6-27 20-42 39-42s33 15 39 42" fill="#202020"/>
+  <path d="M63 138c6-25 19-39 36-39s30 14 36 39" fill="#333"/>
+  <path d="M41 70c0-22 10-36 25-36s25 14 25 36v12c0 20-11 34-25 34S41 102 41 82V70z" fill="url(#skinA)"/>
+  <path d="M81 71c0-21 10-34 24-34s24 13 24 34v12c0 19-10 33-24 33S81 102 81 83V71z" fill="url(#skinB)"/>
+  <path d="M39 71c4-25 15-38 31-38 11 0 20 6 24 18-17-1-31-5-42-13-5 8-9 19-13 33z" fill="#2b1408"/>
+  <path d="M79 74c3-25 14-38 29-38 13 0 22 9 25 28-16-2-29-8-39-18-6 7-10 16-15 28z" fill="#3b2112"/>
+  <circle cx="59" cy="84" r="3.5" fill="#111"/>
+  <circle cx="75" cy="84" r="3.5" fill="#111"/>
+  <circle cx="99" cy="85" r="3.5" fill="#111"/>
+  <circle cx="115" cy="85" r="3.5" fill="#111"/>
+  <path d="M58 99c6 5 13 5 19 0" fill="none" stroke="#411b0d" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M98 100c6 5 12 5 18 0" fill="none" stroke="#411b0d" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M52 79h29c3 0 5 2 5 5v2c0 3-2 5-5 5H52c-3 0-5-2-5-5v-2c0-3 2-5 5-5z" fill="none" stroke="#111" stroke-width="3" opacity=".8"/>
+  <path d="M92 80h30c3 0 5 2 5 5v2c0 3-2 5-5 5H92c-3 0-5-2-5-5v-2c0-3 2-5 5-5z" fill="none" stroke="#111" stroke-width="3" opacity=".8"/>
+</svg>

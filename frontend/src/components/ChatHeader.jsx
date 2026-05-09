@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Phone, Search, Video, X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import { formatLastSeen } from "../lib/utils";
@@ -7,32 +7,44 @@ const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
 
-  const isOnline = onlineUsers.includes(selectedUser._id);
+  const isOnline = !selectedUser.isGroup && onlineUsers.includes(selectedUser._id);
 
   return (
-    <div className="p-2.5 border-b border-base-300">
+    <div className="border-b border-base-300 bg-base-100 px-4 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* Avatar */}
           <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
+            <div className="size-10 rounded-full relative border border-base-300">
+              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName || selectedUser.name} />
             </div>
           </div>
 
-          {/* User info */}
           <div>
-            <h3 className="font-medium">{selectedUser.fullName}</h3>
-            <p className={`text-sm ${isOnline ? "text-green-500" : "text-base-content/70"}`}>
-              {isOnline ? "Online" : formatLastSeen(selectedUser.lastSeen)}
+            <h3 className="font-medium">{selectedUser.fullName || selectedUser.name}</h3>
+            <p className="text-sm text-base-content/60">
+              {selectedUser.isGroup
+                ? `${selectedUser.memberCount || selectedUser.members?.length || 0} members`
+                : isOnline
+                  ? "Online"
+                  : formatLastSeen(selectedUser.lastSeen)}
             </p>
           </div>
         </div>
 
-        {/* Close button */}
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
+        <div className="flex items-center gap-1">
+          <button className="icon-btn hidden sm:inline-flex">
+            <Search className="size-5" />
+          </button>
+          <button className="icon-btn hidden sm:inline-flex">
+            <Phone className="size-5" />
+          </button>
+          <button className="icon-btn hidden sm:inline-flex">
+            <Video className="size-5" />
+          </button>
+          <button className="icon-btn" onClick={() => setSelectedUser(null)}>
+            <X className="size-5" />
+          </button>
+        </div>
       </div>
     </div>
   );

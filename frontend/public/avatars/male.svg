@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Default male avatar">
+  <defs>
+    <linearGradient id="bg" x1="24" x2="136" y1="20" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f5f5f5"/>
+      <stop offset="1" stop-color="#d4d4d4"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="56" x2="108" y1="42" y2="126" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0be8d"/>
+      <stop offset="1" stop-color="#c77848"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="49" x2="112" y1="20" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7c3f16"/>
+      <stop offset="1" stop-color="#2b1408"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="80" fill="#111"/>
+  <circle cx="80" cy="80" r="70" fill="url(#bg)"/>
+  <path d="M35 142c8-28 25-44 45-44s37 16 45 44" fill="#2b2b2b"/>
+  <path d="M52 76c-8-5-13 2-10 12 3 9 10 10 13 4l-3-16z" fill="#cc8150"/>
+  <path d="M108 76c8-5 13 2 10 12-3 9-10 10-13 4l3-16z" fill="#cc8150"/>
+  <path d="M49 66c0-27 14-43 31-43s31 16 31 43v21c0 25-14 43-31 43S49 112 49 87V66z" fill="url(#skin)"/>
+  <path d="M48 69c2-25 8-38 21-42 12-5 29-1 39 11 7 9 8 20 4 33-7-14-16-19-28-19-14 0-22 11-36 17z" fill="url(#hair)"/>
+  <path d="M60 43c11 2 27-8 33-19 2 13-8 28-23 34" fill="#5a2b0f"/>
+  <path d="M72 82c-6-3-12-3-18 0" stroke="#4a2412" stroke-width="4" stroke-linecap="round"/>
+  <path d="M106 82c-6-3-12-3-18 0" stroke="#4a2412" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="64" cy="91" r="4" fill="#171717"/>
+  <circle cx="96" cy="91" r="4" fill="#171717"/>
+  <path d="M75 95c-2 7-4 10-8 13 5 2 10 2 14-1" fill="none" stroke="#9d552d" stroke-width="3" stroke-linecap="round"/>
+  <path d="M66 115c8 8 20 8 28 0" fill="none" stroke="#411b0d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M69 111c7 3 15 3 22 0" fill="#fff"/>
+  <path d="M52 87h23c4 0 7 3 7 7v1c0 4-3 7-7 7H58c-4 0-7-3-7-7v-7h1z" fill="none" stroke="#d62828" stroke-width="5"/>
+  <path d="M85 87h23v8c0 4-3 7-7 7H91c-4 0-7-3-7-7v-1c0-4 3-7 7-7z" fill="none" stroke="#d62828" stroke-width="5"/>
+  <path d="M81 93h4" stroke="#d62828" stroke-width="4" stroke-linecap="round"/>
+</svg>

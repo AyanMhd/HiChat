@@ -3,6 +3,7 @@ import Message from "../models/message.model.js";
 
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
+import { serializeUser } from "../lib/avatars.js";
 
 export const getUsersForSidebar = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ export const getUsersForSidebar = async (req, res) => {
           .limit(1);
 
         return {
-          ...user.toObject(),
+          ...serializeUser(user),
           lastMessage: lastMessage
             ? {
                 text: lastMessage.text,

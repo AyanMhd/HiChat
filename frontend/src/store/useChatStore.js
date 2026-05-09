@@ -3,12 +3,15 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 import { playNotificationSound } from "../lib/utils";
-
+//whole zustand cover 
+//one time pass of set and get
 export const useChatStore = create((set, get) => ({
   messages: [],
   users: [],
+  groups: [],
   selectedUser: null,
   isUsersLoading: false,
+  isGroupsLoading: false,
   isMessagesLoading: false,
   isReceiverTyping: false,
   unreadCounts: {}, // { oderId: count }
@@ -26,10 +29,37 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
+  getGroups: async () => {
+    set({ isGroupsLoading: true });
+    try {
+      const res = await axiosInstance.get("/groups");
+      set({ groups: res.data });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to load groups");
+    } finally {
+      set({ isGroupsLoading: false });
+    }
+  },
+
+  createGroup: async ({ name, memberIds }) => {
+    try {
+      const res = await axiosInstance.post("/groups", { name, memberIds });
+      set({ groups: [res.data, ...get().groups], selectedUser: res.data });
+      toast.success("Group created");
+      return res.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to create group");
+      return null;
+    }
+  },
+
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
-      const res = await axiosInstance.get(`/messages/${userId}`);
+      const { selectedUser } = get();
+      const res = selectedUser?.isGroup
+        ? await axiosInstance.get(`/groups/${userId}/messages`)
+        : await axiosInstance.get(`/messages/${userId}`);
       set({ messages: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -45,7 +75,9 @@ export const useChatStore = create((set, get) => ({
         ...messageData,
         replyTo: replyingTo?._id || null,
       };
-      const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, payload);
+      const res = selectedUser?.isGroup
+        ? await axiosInstance.post(`/groups/${selectedUser._id}/messages`, payload)
+        : await axiosInstance.post(`/messages/send/${selectedUser._id}`, payload);
       set({ messages: [...messages, res.data], replyingTo: null });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -68,6 +100,7 @@ export const useChatStore = create((set, get) => ({
   },
 
   markMessagesAsRead: async (senderId) => {
+    if (get().selectedUser?.isGroup) return;
     try {
       await axiosInstance.put(`/messages/read/${senderId}`);
     } catch (error) {
@@ -83,6 +116,7 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
 
     socket.on("newMessage", (newMessage) => {
+      if (selectedUser.isGroup) return;
       const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
       if (!isMessageSentFromSelectedUser) return;
 
@@ -92,6 +126,11 @@ export const useChatStore = create((set, get) => ({
 
       // Immediately mark as read since the chat is already open
       get().markMessagesAsRead(selectedUser._id);
+    });
+
+    socket.on("newGroupMessage", (newMessage) => {
+      if (!selectedUser.isGroup || newMessage.groupId !== selectedUser._id) return;
+      set({ messages: [...get().messages, newMessage] });
     });
 
     // Typing indicator listeners
@@ -134,6 +173,7 @@ export const useChatStore = create((set, get) => ({
     socket.off("userStoppedTyping");
     socket.off("messageDeleted");
     socket.off("messagesRead");
+    socket.off("newGroupMessage");
     set({ isReceiverTyping: false });
   },
 
@@ -174,12 +214,46 @@ export const useChatStore = create((set, get) => ({
         set({ users: updatedUsers });
       }
     });
+
+    socket.on("newGroupMessage", (newMessage) => {
+      const { selectedUser, unreadCounts, groups } = get();
+      const groupKey = `group:${newMessage.groupId}`;
+      if (!selectedUser || !selectedUser.isGroup || selectedUser._id !== newMessage.groupId) {
+        playNotificationSound();
+        set({
+          unreadCounts: {
+            ...unreadCounts,
+            [groupKey]: (unreadCounts[groupKey] || 0) + 1,
+          },
+          groups: groups.map((group) =>
+            group._id === newMessage.groupId
+              ? {
+                  ...group,
+                  lastMessage: {
+                    text: newMessage.text,
+                    image: newMessage.image,
+                    createdAt: newMessage.createdAt,
+                    senderId: newMessage.senderId,
+                  },
+                }
+              : group
+          ),
+        });
+      }
+    });
+
+    socket.on("groupCreated", (group) => {
+      const exists = get().groups.some((existingGroup) => existingGroup._id === group._id);
+      if (!exists) set({ groups: [group, ...get().groups] });
+    });
   },
 
   unsubscribeFromUnreadMessages: () => {
     const socket = useAuthStore.getState().socket;
     if (socket) {
       socket.off("newMessage");
+      socket.off("newGroupMessage");
+      socket.off("groupCreated");
     }
   },
 
@@ -193,7 +267,7 @@ export const useChatStore = create((set, get) => ({
   setSelectedUser: (selectedUser) => {
     // Clear unread count when selecting a user
     if (selectedUser) {
-      get().clearUnreadCount(selectedUser._id);
+      get().clearUnreadCount(selectedUser.isGroup ? `group:${selectedUser._id}` : selectedUser._id);
     }
     set({ selectedUser, isReceiverTyping: false });
   },

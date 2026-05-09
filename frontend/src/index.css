@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    background: #f6f6f6;
+  }
+
+  body {
+    min-height: 100vh;
+    letter-spacing: 0;
+  }
+}
+
+@layer components {
+  .app-surface {
+    @apply border border-base-300 bg-base-100 shadow-soft;
+  }
+
+  .mono-input {
+    @apply input input-bordered w-full rounded-lg border-base-300 bg-base-100 focus:border-base-content focus:outline-none;
+  }
+
+  .icon-btn {
+    @apply btn btn-ghost btn-square rounded-lg border border-transparent hover:border-base-300 hover:bg-base-200;
+  }
+
+  .page-shell {
+    @apply min-h-screen bg-base-200 px-4 pb-8 pt-24 text-base-content;
+  }
+
+  .section-panel {
+    @apply rounded-lg border border-base-300 bg-base-100 shadow-soft;
+  }
+
+  .muted-label {
+    @apply text-xs font-medium uppercase tracking-[0.14em] text-base-content/45;
+  }
+
+  .field-label {
+    @apply text-sm font-medium text-base-content/75;
+  }
+
+  .workspace-backdrop {
+    background:
+      radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.1), transparent 24rem),
+      radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.08), transparent 22rem),
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      #111111;
+    background-size: auto, auto, 42px 42px, 42px 42px, auto;
+  }
+
+  .workspace-glass {
+    @apply border border-white/10 bg-white/[0.04] text-white/60 shadow-soft backdrop-blur;
+  }
+}

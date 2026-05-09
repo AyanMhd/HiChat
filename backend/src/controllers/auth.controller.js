@@ -2,12 +2,17 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
+import { getDefaultAvatar, normalizeGender, serializeUser } from "../lib/avatars.js";
 
 export const signup = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, gender } = req.body;
   try {
-    if (!fullName || !email || !password) {
+    if (!fullName || !email || !password || !gender) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (!["male", "female"].includes(gender)) {
+      return res.status(400).json({ message: "Please choose male or female" });
     }
 
     if (password.length < 6) {
@@ -31,6 +36,8 @@ export const signup = async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
+      gender: normalizeGender(gender),
+      profilePic: getDefaultAvatar(gender),
     });
 
     if (newUser) {
@@ -38,12 +45,7 @@ export const signup = async (req, res) => {
       generateToken(newUser._id, res);
       await newUser.save();
 
-      res.status(201).json({
-        _id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email,
-        profilePic: newUser.profilePic,
-      });
+      res.status(201).json(serializeUser(newUser));
     } else {
       res.status(400).json({ message: "Invalid user data" });
     }
@@ -69,12 +71,7 @@ export const login = async (req, res) => {
 
     generateToken(user._id, res);
 
-    res.status(200).json({
-      _id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      profilePic: user.profilePic,
-    });
+    res.status(200).json(serializeUser(user));
   } catch (error) {
     console.log("Error in login controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -107,7 +104,7 @@ export const updateProfile = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updatedUser);
+    res.status(200).json(serializeUser(updatedUser));
   } catch (error) {
     console.log("error in update profile:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -116,7 +113,7 @@ export const updateProfile = async (req, res) => {
 
 export const checkAuth = (req, res) => {
   try {
-    res.status(200).json(req.user);
+    res.status(200).json(serializeUser(req.user));
   } catch (error) {
     console.log("Error in checkAuth controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
